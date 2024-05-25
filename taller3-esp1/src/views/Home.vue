@@ -1,5 +1,9 @@
+<script setup>
+// wiki component
+</script>
 <template>
-  <router-view/>
+    <main class="flex flex-col gap-4">
+
+
+    </main>
 </template>
-
-
