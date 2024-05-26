@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue';
 import { fighters } from '@/core/fighters';
-import { FighterControls } from '@/core/models/FighterControls';
 
 import FighterCard from '../molecules/FighterCard.vue';
 
@@ -16,21 +15,6 @@ const props = defineProps({
     }
 })
 
-const player1Controls = new FighterControls({
-    toUp: "w",
-    toDown: "s",
-    toLeft: "a",
-    toRight: "d",
-    attack: "q",
-});
-
-const player2Controls = new FighterControls({
-    toUp: "i",
-    toDown: "k",
-    toLeft: "j",
-    toRight: "l",
-    attack: "o",
-})
 
 const emits = defineEmits(['update:player1', 'update:player2']);
 

@@ -1,24 +1,30 @@
 import {
-    getLifeBarColor,
     stopGameSoundtrack,
-    playGameSoundtrack,
     playGameOverSound,
 } from "./utils.js";
-import { handleMoveFighter } from "./handlers/movementHandler.js";
-import { handleAttack } from "./handlers/attackHandler.js";
+
+import { useRecordsStore } from "@/store/recordsStore.js";
+import { useAuthStore } from "@/store/authStore.js";
+
+import { updateFighterVelocity, updateFighterPosition } from "./handlers/movementHandler.js";
+import { handleAttack, updatePlayerLife, updatePlayerStats } from "./handlers/attackHandler.js";
 import { checkCollision, handleCollision } from "./handlers/collisionHandler.js";
 
 let gameOver = false;
 let gameInterval;
 let gamePaused = false;
 
-export const handleStartButton = ({ speed, player1, player2 }) => {
+const { addRecord } = useRecordsStore();
+
+export const play = ({ speed, player1, player2, onGameFinish }) => {
     // const overlay = document.getElementById("overlay");
+    const fightArea = document.getElementById("fightArea");
     if (gameOver) {
         window.location.reload();
     } else {
         if (!gamePaused) {
-            startGameLoop(speed, player1, player2);
+            controlPlayers({ player1, player2 });
+            startGameLoop({ speed, player1, player2, fightArea, onGameFinish });
             // overlay.style.display = "none";
         } else {
             pauseGameLoop();
@@ -29,11 +35,11 @@ export const handleStartButton = ({ speed, player1, player2 }) => {
 
 };
 
-export const startGameLoop = (speed, player1, player2) => {
-    playGameSoundtrack();
+export const startGameLoop = ({ speed, player1, player2, fightArea, onGameFinish }) => {
+    // playGameSoundtrack();
     gameInterval = setInterval(() => {
-        controlPlayers(player1, player2);
-        if (checkGameOver(player1, player2)) {
+        movePlayers({ player1, player2, speed, fightArea });
+        if (checkGameOver(player1, player2, onGameFinish)) {
             clearInterval(gameInterval);
         }
     }, 1000 / 60);
@@ -44,13 +50,19 @@ export const pauseGameLoop = () => {
     stopGameSoundtrack();
 };
 
-export const controlPlayers = (player1, player2) => {
+export const controlPlayers = ({ player1, player2 }) => {
     updatePlayerLife(player1);
     updatePlayerLife(player2);
 
     document.addEventListener("keydown", (event) => {
-        handleMoveFighter(event.key, player1, player1.speed);
-        handleMoveFighter(event.key, player2, player2.speed);
+        updateFighterVelocity({
+            key: event.key,
+            fighter: player1
+        });
+        updateFighterVelocity({
+            key: event.key,
+            fighter: player2,
+        });
 
         if (checkCollision(player1.getHitbox(), player2.getHitbox())) {
             handleCollision(player1, player2);
@@ -58,6 +70,15 @@ export const controlPlayers = (player1, player2) => {
             handleAttack(event.key, player2, player1);
         }
     });
+};
+
+const movePlayers = ({ player1, player2, speed, fightArea }) => {
+    if (player1.isAlive()) {
+        updateFighterPosition({ fighter: player1, speed: speed, fightArea: fightArea });
+    }
+    if (player2.isAlive()) {
+        updateFighterPosition({ fighter: player2, speed: speed, fightArea: fightArea });
+    }
 };
 
 export const placePlayers = (player1, player2) => {
@@ -74,25 +95,6 @@ export const placePlayers = (player1, player2) => {
     player2Box.style.left = `${(fightAreaWidth / 4) * 3}px`;
 };
 
-export const updatePlayerStats = (player) => {
-    const playerStats = document.querySelector(`#${player.playerID}Stats`);
-    playerStats.innerHTML = `<span>${player.name} - ${player.health}/${player.maxhealth}</span>
-    <span>Daño: ${player.damage}</span>
-    `;
-};
-
-export const updatePlayerLife = (player) => {
-    updatePlayerStats(player);
-    const lifeBarInner = document.querySelector(`#${player.playerID}Life .life__bar-inner`);
-    const percent = (player.health / player.maxhealth) * 100;
-    lifeBarInner.style.width = percent > 0 ? `${percent}%` : "0%";
-    lifeBarInner.style.backgroundColor = getLifeBarColor(percent);
-    //lifeBarInner.innerHTML = percent > 0 ? `${player.health}/${player.maxhealth}` : "";
-
-    if (!player.isAlive()) {
-        player.removeBox();
-    }
-};
 
 const updateStartButtonText = (text) => {
     document.getElementById("startButton").textContent = text;
@@ -100,7 +102,7 @@ const updateStartButtonText = (text) => {
 
 const checkGameOver = (player1, player2, onGameFinish) => {
     if (!player1.isAlive()) {
-        handleGameWinner(player2);
+        handleGameWinner(player2, onGameFinish);
         return true;
     } else if (!player2.isAlive()) {
         handleGameWinner(player1);
@@ -109,10 +111,12 @@ const checkGameOver = (player1, player2, onGameFinish) => {
     return false;
 };
 
-const handleGameWinner = (player) => {
+const handleGameWinner = (player, onGameFinish) => {
     stopGameSoundtrack();
     playGameOverSound();
     alert(`${player.name} ha ganado!`);
-    updateStartButtonText("Restart Game");
+    onGameFinish(player);
+
+    // updateStartButtonText("Restart Game");
     gameOver = true;
 };

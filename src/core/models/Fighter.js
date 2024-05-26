@@ -15,18 +15,17 @@ export class Fighter {
         this.color = color;
         this.velocity = { x: 0, y: 0 };
         this.image = image;
-
+        this.controls = null;
+        this.position = { x: 0, y: 0 };
     }
 
     setControls(controls) {
-        this.toUp = controls.toUp;
-        this.toDown = controls.toDown;
-        this.toLeft = controls.toLeft;
-        this.toRight = controls.toRight;
-        this.attackKey = controls.attack;
+        this.controls = controls;
     }
 
-    initialize({ fightArea }) {
+    initialize({ fightArea, controls }) {
+        this.setControls(controls);
+
         const box = document.createElement("div");
         box.id = this.playerID;
         box.innerText = this.name;
@@ -80,32 +79,6 @@ export class Fighter {
 
         hitAudio.play();
         target.health -= this.damage;
-    }
-
-    updatePosition(speed) {
-        const fightArea = document.getElementById("fightArea");
-        const fightAreaWidth = fightArea.offsetWidth;
-        const fightAreaHeight = fightArea.offsetHeight;
-        const box = this.getHitbox();
-
-        let newX = parseInt(box.style.left || 0) + this.velocity.x * speed;
-        let newY = parseInt(box.style.top || 0) + this.velocity.y * speed;
-
-        newX = Math.max(0, Math.min(fightAreaWidth - box.offsetWidth, newX));
-        newY = Math.max(0, Math.min(fightAreaHeight - box.offsetHeight, newY));
-
-        box.style.left = `${newX}px`;
-        box.style.top = `${newY}px`;
-
-        this.velocity.x = 0;
-        this.velocity.y = 0;
-    }
-
-    updateVelocity(key) {
-        if (key === this.toUp) this.velocity.y = -1;
-        else if (key === this.toDown) this.velocity.y = 1;
-        else if (key === this.toLeft) this.velocity.x = -1;
-        else if (key === this.toRight) this.velocity.x = 1;
     }
 
     status() {

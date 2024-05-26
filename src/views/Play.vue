@@ -1,8 +1,30 @@
 <script setup>
 import { ref, onMounted, nextTick } from 'vue';
-import { handleStartButton } from '@/core';
+import { play } from '@/core';
+import { FighterControls } from '@/core/models/FighterControls';
+import { useAuthStore } from '@/store/authStore';
+import { useRecordsStore } from '@/store/recordsStore';
 import FighterSelector from '@/components/organisms/FighterSelector.vue';
 import FighterCard from '@/components/molecules/FighterCard.vue';
+
+const player1Controls = new FighterControls({
+    toUp: "w",
+    toDown: "s",
+    toLeft: "a",
+    toRight: "d",
+    attack: "q",
+});
+
+const player2Controls = new FighterControls({
+    toUp: "i",
+    toDown: "k",
+    toLeft: "j",
+    toRight: "l",
+    attack: "o",
+})
+
+const { authUser } = useAuthStore();
+const { addRecord } = useRecordsStore();
 
 const fightArea = ref(null);
 const speed = 30;
@@ -11,6 +33,24 @@ const start = ref(false);
 const player1 = ref(null);
 const player2 = ref(null);
 
+const handleGameFinish = (winner) => {
+    const record = {
+        user: authUser.name,
+        timestamp: new Date().toLocaleString(),
+        winner: winner,
+    };
+
+    addRecord(record);
+    start.value = false;
+    player1.value = null;
+    player2.value = null;
+    fightArea.value.innerHTML = "";
+    nextTick(() => {
+        fightArea.value.innerHTML = "";
+    });
+
+}
+
 
 const handleStartGame = async () => {
     if (player1.value && player2.value) {
@@ -18,14 +58,21 @@ const handleStartGame = async () => {
         await nextTick();
 
         player1.value.initialize({
-            fightArea: fightArea.value
+            fightArea: fightArea.value,
+            controls: player1Controls,
         });
         player2.value.initialize({
-            fightArea: fightArea.value
+            fightArea: fightArea.value,
+            controls: player2Controls
         });
-        handleStartButton({
+
+        // Start the game
+
+        play({
             player1: player1.value,
             player2: player2.value,
+            speed: speed,
+            onGameFinish: handleGameFinish,
         });
     }
 }
@@ -52,8 +99,11 @@ const handleStartGame = async () => {
             </button>
         </div>
     </main>
-    <main v-else class="flex w-full h-full">
-        <audio id="gameAudio" src="assets/fight.wav" preload="auto" loop></audio>
+    <main v-else class="flex flex-col gap-5 text-text w-full h-full">
+        <audio id="gameAudio" src="../assets/fight.wav" preload="auto" loop></audio>
+        <audio id="player1HitAudio" src=".../assets/hit-sound.mp3" preload="auto"></audio>
+        <audio id="player2HitAudio" src="../assets/hit-sound.mp3" preload="auto"></audio>
+        <audio id="gameOverAudio" src="../assets/round_end.wav" preload="auto"></audio>
 
         <div class="flex w-full justify-between">
             <picture class="flex flex-col gap-2">
@@ -71,6 +121,6 @@ const handleStartGame = async () => {
                 </div>
             </picture>
         </div>
-        <canvas id="fightArea" ref="fightArea"></canvas>
+        <div class="fight__area" id="fightArea" ref="fightArea"></div>
     </main>
 </template>
