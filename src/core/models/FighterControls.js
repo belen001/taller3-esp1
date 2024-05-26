@@ -1,4 +1,4 @@
-export class PlayerControls {
+export class FighterControls {
     constructor({ toUp, toDown, toLeft, toRight, attack }) {
         this.toUp = toUp;
         this.toDown = toDown;

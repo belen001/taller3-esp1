@@ -4,7 +4,7 @@ import {
     playGameSoundtrack,
     playGameOverSound,
 } from "./utils.js";
-
+import { handleMoveFighter } from "./handlers/movementHandler.js";
 import { handleAttack } from "./handlers/attackHandler.js";
 import { checkCollision, handleCollision } from "./handlers/collisionHandler.js";
 
@@ -12,7 +12,7 @@ let gameOver = false;
 let gameInterval;
 let gamePaused = false;
 
-export const handleStartButton = (speed, player1, player2, restartCallback) => {
+export const handleStartButton = ({ speed, player1, player2 }) => {
     // const overlay = document.getElementById("overlay");
     if (gameOver) {
         window.location.reload();
