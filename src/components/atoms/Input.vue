@@ -46,13 +46,13 @@ if (props.formatter) {
 
 <template>
     <div class="flex flex-col gap-2 w-full">
-        <label for="floating_outlined" class="text-text/60 text-sm font-medium">
+        <label :for="title" class="text-text/60 text-sm font-medium">
             {{ title }}
             <span class="ml-2 text-red-500 font-medium text-xs" v-if="errorMessage !== ''">
                 {{ errorMessage }}
             </span>
         </label>
-        <input :value="modelValue" @input="handleInput" :type="type" id="floating_outlined" :class="borderClass"
+        <input :value="modelValue" @input="handleInput" :type="type" :id="title" :class="borderClass"
             class="
             bg-primary-900 text-text
             text-sm w-full p-2.5 border-[1.5px] border-transparent ring-1 transition-all duration-100 focus:outline-none focus:border-[1.5px]  rounded-md " :placeholder="placeholder" />

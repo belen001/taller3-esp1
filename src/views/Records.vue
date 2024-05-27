@@ -3,7 +3,6 @@ import { useRecordsStore } from '@/store/recordsStore';
 
 const { records } = useRecordsStore();
 
-console.log(records);
 
 </script>
 

@@ -1,6 +1,7 @@
 import {
     stopGameSoundtrack,
     playGameOverSound,
+    playGameSoundtrack
 } from "./utils.js";
 
 import { useRecordsStore } from "@/store/recordsStore.js";
@@ -14,15 +15,16 @@ let gameOver = false;
 let gameInterval;
 let gamePaused = false;
 
-const { addRecord } = useRecordsStore();
-
 export const play = ({ speed, player1, player2, onGameFinish }) => {
     // const overlay = document.getElementById("overlay");
     const fightArea = document.getElementById("fightArea");
+
+
     if (gameOver) {
         window.location.reload();
     } else {
         if (!gamePaused) {
+            placePlayers(player1, player2);
             controlPlayers({ player1, player2 });
             startGameLoop({ speed, player1, player2, fightArea, onGameFinish });
             // overlay.style.display = "none";
@@ -36,10 +38,14 @@ export const play = ({ speed, player1, player2, onGameFinish }) => {
 };
 
 export const startGameLoop = ({ speed, player1, player2, fightArea, onGameFinish }) => {
-    // playGameSoundtrack();
+    playGameSoundtrack();
     gameInterval = setInterval(() => {
         movePlayers({ player1, player2, speed, fightArea });
-        if (checkGameOver(player1, player2, onGameFinish)) {
+        if (checkGameOver({
+            player1: player1,
+            player2: player2,
+            onGameFinish: onGameFinish
+        })) {
             clearInterval(gameInterval);
         }
     }, 1000 / 60);
@@ -95,28 +101,20 @@ export const placePlayers = (player1, player2) => {
     player2Box.style.left = `${(fightAreaWidth / 4) * 3}px`;
 };
 
-
-const updateStartButtonText = (text) => {
-    document.getElementById("startButton").textContent = text;
-};
-
-const checkGameOver = (player1, player2, onGameFinish) => {
+const checkGameOver = ({ player1, player2, onGameFinish }) => {
     if (!player1.isAlive()) {
-        handleGameWinner(player2, onGameFinish);
+        handleGameWinner({ player: player2, onGameFinish: onGameFinish });
         return true;
     } else if (!player2.isAlive()) {
-        handleGameWinner(player1);
+        handleGameWinner({ player: player1, onGameFinish: onGameFinish });
         return true;
     }
     return false;
 };
 
-const handleGameWinner = (player, onGameFinish) => {
+const handleGameWinner = ({ player, onGameFinish }) => {
     stopGameSoundtrack();
     playGameOverSound();
-    alert(`${player.name} ha ganado!`);
     onGameFinish(player);
-
-    // updateStartButtonText("Restart Game");
     gameOver = true;
 };
