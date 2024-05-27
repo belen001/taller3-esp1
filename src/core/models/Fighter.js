@@ -17,10 +17,15 @@ export class Fighter {
         this.image = image;
         this.controls = null;
         this.position = { x: 0, y: 0 };
+        this.associatedUser = null;
     }
 
     setControls(controls) {
         this.controls = controls;
+    }
+
+    setAssociatedUser(user) {
+        this.associatedUser = user;
     }
 
     initialize({ fightArea, controls }) {
@@ -28,7 +33,6 @@ export class Fighter {
 
         const box = document.createElement("div");
         box.id = this.playerID;
-        box.innerText = this.name;
         box.classList.add("fighter__container");
         box.style.position = "absolute";
         box.style.backgroundImage = `url(${this.image})`;
@@ -83,5 +87,10 @@ export class Fighter {
 
     status() {
         return `${this.name} - HP ${this.health}/${this.maxhealth}`;
+    }
+
+    // reset the health of the fighter
+    reset() {
+        this.health = this.maxhealth;
     }
 }

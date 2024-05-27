@@ -29,3 +29,26 @@ export const playGameOverSound = () => {
     const audio = document.getElementById("gameOverAudio");
     audio.play();
 };
+
+export const playSelectedPlayerSound = () => {
+    const audio = document.getElementById("selectedPlayerAudio");
+    if (audio.paused) {
+        audio.play();
+    } else {
+        audio.currentTime = 0;
+    }
+}
+
+export const playUnselectedPlayerSound = () => {
+    const audio = document.getElementById("unselectedPlayerAudio");
+    if (audio.paused) {
+        audio.play();
+    } else {
+        audio.currentTime = 0;
+    }
+}
+
+export const playStartGameSound = () => {
+    const audio = document.getElementById("startGameAudio");
+    audio.play();
+}

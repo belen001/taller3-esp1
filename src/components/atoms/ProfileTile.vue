@@ -2,14 +2,19 @@
 import Divider from '@/components/atoms/Divider.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useAuthStore } from '@/store/authStore';
-import { useRouter } from 'vue-router';
 
-
-const router = useRouter();
+const dropdownRef = ref(null);
 const { authUser, logout } = useAuthStore();
 const isDropdownOpen = ref(false);
+
+
+const handleClickOutside = (event) => {
+    if (dropdownRef.value && !dropdownRef.value.contains(event.target)) {
+        toggleDropdown();
+    }
+}
 
 const toggleDropdown = () => {
     isDropdownOpen.value = !isDropdownOpen.value;
@@ -21,16 +26,28 @@ const handleLogout = () => {
     window.location.reload();
 };
 
+
+// click listener
+onMounted(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+});
+
+onUnmounted(() => {
+    document.removeEventListener("mousedown", handleClickOutside);
+});
+
+
 </script>
 
 
 <template>
     <div v-if="authUser" class="flex items-center gap-4 relative dark:text-text">
         <img @click="toggleDropdown"
-            class="w-10 h-10 rounded-full object-cover cursor-pointer hover:scale-[101%] transition-all duration-200"
+            class="w-10 h-10 rounded-full object-cover cursor-pointer hover:scale-[104%] transition-all duration-200"
             :src="authUser.picture" alt="Profile Picture" />
         <transition>
-            <div v-if="isDropdownOpen" class="flex flex-col w-60 absolute top-10 right-6 rounded-md bg-primary-950">
+            <div v-if="isDropdownOpen" ref="dropdownRef"
+                class="flex flex-col w-60 absolute top-10 right-6 rounded-md bg-primary-950">
                 <div class="flex gap-5 w-full items-center p-4">
                     <img class="w-10 h-10 rounded-full object-cover cursor-pointer hover:scale-[101%] transition-all duration-200"
                         :src="authUser.picture" alt="Profile Picture" />

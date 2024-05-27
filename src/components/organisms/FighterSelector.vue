@@ -1,10 +1,12 @@
 <script setup>
 import { ref } from 'vue';
 import { fighters } from '@/core/fighters';
+import { playSelectedPlayerSound, playUnselectedPlayerSound } from '@/core/utils';
 
 import FighterCard from '../molecules/FighterCard.vue';
 
 const fightersRef = ref(fighters);
+const audioRef = ref(null);
 
 const props = defineProps({
     player1: {
@@ -18,7 +20,6 @@ const props = defineProps({
     onStartGame: Function
 })
 
-
 const emits = defineEmits(['update:player1', 'update:player2']);
 
 const handlePlayerSelect = (fighter) => {
@@ -28,6 +29,7 @@ const handlePlayerSelect = (fighter) => {
         handlePlayer2Select(fighter);
     }
 
+    playSelectedPlayerSound();
 }
 
 const handlePlayer1Select = (fighter) => {
@@ -47,18 +49,28 @@ const handleTitle = () => {
 }
 
 const handleUnselectPlayer1 = (player) => {
-    fightersRef.value = [...fightersRef.value, player];
-    emits('update:player1', null);
+    if (props.player1 !== null) {
+        fightersRef.value = [...fightersRef.value, player];
+        emits('update:player1', null);
+
+        playUnselectedPlayerSound();
+    }
 }
 
 const handleUnselectPlayer2 = (player) => {
-    fightersRef.value = [...fightersRef.value, player];
-    emits('update:player2', null);
+    if (props.player2 !== null) {
+        fightersRef.value = [...fightersRef.value, player];
+        emits('update:player2', null);
+
+        playUnselectedPlayerSound();
+    }
 }
 
 </script>
 
 <template>
+    <audio id="selectedPlayerAudio" src="src/assets/selected-player.wav"></audio>
+    <audio id="unselectedPlayerAudio" src="src/assets/unselected-player.wav"></audio>
     <section class="flex flex-col gap-6 max-h-full">
         <h3 class="text-lg font-semibold text-center"> Personajes</h3>
         <div class="flex flex-col w-full items-center gap-10 overflow-y-auto px-4 py-2">

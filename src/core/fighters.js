@@ -1,4 +1,5 @@
 import { Fighter } from "./models/Fighter";
+import { FighterControls } from "./models/FighterControls";
 
 export const fighters = [
     new Fighter({
@@ -26,3 +27,25 @@ export const fighters = [
         image: "src/assets/gifs/chunli.gif"
     }),
 ]
+
+export const restartFighters = () => {
+    fighters.forEach(fighter => {
+        fighter.reset();
+    });
+}
+
+export const defaultPlayer1Controls = new FighterControls({
+    toUp: "w",
+    toDown: "s",
+    toLeft: "a",
+    toRight: "d",
+    attack: "q",
+});
+
+export const defaultPlayer2Controls = new FighterControls({
+    toUp: "i",
+    toDown: "k",
+    toLeft: "j",
+    toRight: "l",
+    attack: "o",
+})

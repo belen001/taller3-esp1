@@ -4,8 +4,6 @@ import {
     playGameSoundtrack
 } from "./utils.js";
 
-import { useRecordsStore } from "@/store/recordsStore.js";
-import { useAuthStore } from "@/store/authStore.js";
 
 import { updateFighterVelocity, updateFighterPosition } from "./handlers/movementHandler.js";
 import { handleAttack, updatePlayerLife, updatePlayerStats } from "./handlers/attackHandler.js";
@@ -13,27 +11,16 @@ import { checkCollision, handleCollision } from "./handlers/collisionHandler.js"
 
 let gameOver = false;
 let gameInterval;
-let gamePaused = false;
 
 export const play = ({ speed, player1, player2, onGameFinish }) => {
-    // const overlay = document.getElementById("overlay");
+    gameOver = false;
     const fightArea = document.getElementById("fightArea");
 
+    placePlayers(player1, player2);
+    controlPlayers({ player1, player2 });
+    startGameLoop({ speed, player1, player2, fightArea, onGameFinish });
+    // overlay.style.display = "none";
 
-    if (gameOver) {
-        window.location.reload();
-    } else {
-        if (!gamePaused) {
-            placePlayers(player1, player2);
-            controlPlayers({ player1, player2 });
-            startGameLoop({ speed, player1, player2, fightArea, onGameFinish });
-            // overlay.style.display = "none";
-        } else {
-            pauseGameLoop();
-            // overlay.style.display = "block";
-        }
-        gamePaused = !gamePaused;
-    }
 
 };
 
