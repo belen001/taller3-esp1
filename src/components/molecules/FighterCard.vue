@@ -16,7 +16,8 @@ defineProps({
 
 <template>
     <div :class="!fighter && 'animate-pulse'" class="flex select-none flex-col max-w-60 rounded-md bg-primary-950/70 
-    hover:scale-[102%] transition-all duration-200 cursor-pointer shadow-lg shadow-primary-900/80">
+    hover:scale-[102%] transition-all duration-200 cursor-pointer shadow-lg 
+    shadow-primary-900/80">
         <img :src="fighter?.image ?? 'src/assets/unselected.jpg'"
             class="w-full flex-1 aspect-square object-cover rounded-md" />
 

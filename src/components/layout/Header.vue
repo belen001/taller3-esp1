@@ -18,7 +18,7 @@ const isActiveRoute = (route) => {
 
 
 <template>
-    <header class="flex w-full justify-between items-center px-6 h-20 bg-secondary-950">
+    <header class="flex w-full justify-between select-none items-center px-6 h-20 bg-secondary-950">
         <BrandTile />
         <div class="flex items-center gap-4">
             <nav>

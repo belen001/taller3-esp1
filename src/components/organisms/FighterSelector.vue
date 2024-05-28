@@ -6,7 +6,6 @@ import { playSelectedPlayerSound, playUnselectedPlayerSound } from '@/core/utils
 import FighterCard from '../molecules/FighterCard.vue';
 
 const fightersRef = ref(fighters);
-const audioRef = ref(null);
 
 const props = defineProps({
     player1: {
