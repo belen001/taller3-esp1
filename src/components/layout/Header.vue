@@ -3,6 +3,7 @@ import ProfileTile from '@/components/atoms/ProfileTile.vue';
 import { routes } from '@/router/router';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '@/store/authStore';
+import BrandTile from '../atoms/BrandTile.vue';
 
 const { isAuthenticated } = useAuthStore();
 
@@ -18,7 +19,7 @@ const isActiveRoute = (route) => {
 
 <template>
     <header class="flex w-full justify-between items-center px-6 h-20 bg-secondary-950">
-        <h2 class="dark:text-text/80 font-semibold text-lg"> BattleScript </h2>
+        <BrandTile />
         <div class="flex items-center gap-4">
             <nav>
                 <ul class="flex gap-10 items-center">

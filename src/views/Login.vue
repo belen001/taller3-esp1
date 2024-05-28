@@ -5,6 +5,9 @@ import { useRouter } from 'vue-router';
 import useVuelidate from '@vuelidate/core';
 import { loginRules } from '@/validation/formRules';
 import Input from '@/components/atoms/Input.vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faLock } from '@fortawesome/free-solid-svg-icons';
+import BrandTile from '@/components/atoms/BrandTile.vue';
 
 const router = useRouter();
 const globalError = ref('');
@@ -35,10 +38,16 @@ const handleLogin = async () => {
 
 
 <template>
-    <main class="flex items-center justify-center h-full w-full">
+    <main class="flex items-center justify-center h-full w-full text-text">
         <form @submit.prevent="handleLogin"
-            class="flex flex-col gap-4 p-6 h-[40%] w-[60%] bg-primary-950/70 rounded-md justify-between">
-            <h1 class="text-xl text-center text-text font-bold">Login</h1>
+            class="flex flex-col gap-10 p-6 w-[60%] bg-primary-950/70 rounded-md justify-between">
+            <div class="flex justify-between items-center">
+                <h1 class="text-lg text-center text-text font-bold">
+                    <FontAwesomeIcon :icon="faLock" class="mr-2" />
+                    Login
+                </h1>
+                <BrandTile />
+            </div>
 
             <div class="flex flex-col gap-6">
                 <Input v-model="loginData.email" :errorMessage="$v.email.$errors[0]?.$message" title="Email"
