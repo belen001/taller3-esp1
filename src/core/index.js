@@ -3,10 +3,8 @@ import {
     playGameOverSound,
     playGameSoundtrack
 } from "./utils.js";
-
-
 import { updateFighterVelocity, updateFighterPosition } from "./handlers/movementHandler.js";
-import { handleAttack, updatePlayerLife, updatePlayerStats } from "./handlers/attackHandler.js";
+import { handleAttack, showPunch, updatePlayerLife, updatePlayerStats } from "./handlers/attackHandler.js";
 import { checkCollision, handleCollision } from "./handlers/collisionHandler.js";
 
 let gameOver = false;
@@ -19,7 +17,6 @@ export const play = ({ speed, player1, player2, onGameFinish }) => {
     placePlayers(player1, player2);
     controlPlayers({ player1, player2 });
     startGameLoop({ speed, player1, player2, fightArea, onGameFinish });
-    // overlay.style.display = "none";
 
 
 };
@@ -56,6 +53,9 @@ export const controlPlayers = ({ player1, player2 }) => {
             key: event.key,
             fighter: player2,
         });
+
+        // showing punch animation
+        showPunch(player1, player2, event.key);
 
         if (checkCollision(player1.getHitbox(), player2.getHitbox())) {
             handleCollision(player1, player2);

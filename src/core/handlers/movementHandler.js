@@ -21,6 +21,10 @@ export const updateFighterPosition = ({ fighter, speed, fightArea }) => {
     box.style.left = `${newX}px`;
     box.style.top = `${newY}px`;
 
+    fighter.position.x = newX;
+    fighter.position.y = newY;
+
+
     fighter.velocity.x = 0;
     fighter.velocity.y = 0;
 

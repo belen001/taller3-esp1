@@ -9,6 +9,14 @@ export const handleAttack = (key, fighter, opponent) => {
     }
 }
 
+export const showPunch = (fighter1, fighter2, key) => {
+    if (key === fighter1.controls.attack && fighter1.isAlive() && fighter2.isAlive()) {
+        fighter1.showPunch(fighter2);
+    } else if (key === fighter2.controls.attack && fighter2.isAlive() && fighter1.isAlive()) {
+        fighter2.showPunch(fighter1);
+    }
+}
+
 export const updatePlayerStats = (player) => {
     const playerStats = document.querySelector(`#${player.playerID}Stats`);
     playerStats.innerHTML = `<span>${player.name} - ${player.health}/${player.maxhealth}</span>

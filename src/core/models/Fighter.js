@@ -31,6 +31,7 @@ export class Fighter {
     initialize({ fightArea, controls }) {
         this.setControls(controls);
 
+        // hitbox
         const box = document.createElement("div");
         box.id = this.playerID;
         box.classList.add("fighter__container");
@@ -39,9 +40,19 @@ export class Fighter {
         box.style.backgroundSize = "cover";
         box.style.backgroundRepeat = "no-repeat";
 
+        // damage overlay
         const damageOverlay = document.createElement("div");
         damageOverlay.classList.add("damage-overlay");
         box.appendChild(damageOverlay);
+
+
+        // punch
+        const punchOverlay = document.createElement("img");
+        punchOverlay.id = `${this.playerID}GlobalPunch`;
+        punchOverlay.classList.add("punch-overlay");
+        punchOverlay.src = "src/assets/punch.png";
+        box.appendChild(punchOverlay);
+
 
         fightArea.appendChild(box);
     }
@@ -66,6 +77,25 @@ export class Fighter {
         }, 100);
     }
 
+    showPunch(target) {
+        const punchOverlay = document.getElementById(`${this.playerID}GlobalPunch`);
+
+        if (punchOverlay) {
+            punchOverlay.style.display = "block";
+
+            const isTargetToLeft = target.position.x < this.position.x;
+            const animationClass = isTargetToLeft ? 'animate-left' : 'animate-right';
+
+            punchOverlay.offsetWidth;
+            punchOverlay.classList.add(animationClass);
+
+            setTimeout(() => {
+                punchOverlay.classList.remove(animationClass);
+                punchOverlay.style.display = "none";
+            }, 300);
+        }
+    }
+
     removeBox() {
         const box = this.getHitbox();
         if (box) {
@@ -83,6 +113,7 @@ export class Fighter {
 
         hitAudio.play();
         target.health -= this.damage;
+        this.showPunch(target);
     }
 
     status() {

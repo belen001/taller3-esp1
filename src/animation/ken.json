@@ -1,4 +1,8 @@
 {
+    "meta": {
+        "format": "RGBA8888",
+        "scale": "1"
+    },
     "frames": {
         "idle_0": {
             "frame": {
@@ -6,7 +10,8 @@
                 "y": 0,
                 "w": 50,
                 "h": 86
-            }
+            },
+            "image": "src/assets/sprites/idle.png"
         },
         "idle_1": {
             "frame": {
@@ -14,7 +19,8 @@
                 "y": 0,
                 "w": 50,
                 "h": 86
-            }
+            },
+            "image": "src/assets/sprites/idle.png"
         },
         "walk_0": {
             "frame": {
@@ -22,7 +28,8 @@
                 "y": 0,
                 "w": 50,
                 "h": 86
-            }
+            },
+            "image": "src/assets/sprites/walk.png"
         },
         "walk_1": {
             "frame": {
@@ -30,7 +37,18 @@
                 "y": 0,
                 "w": 50,
                 "h": 86
-            }
-        },
+            },
+            "image": "src/assets/sprites/walk.png"
+        }
+    },
+    "animations": {
+        "idle": [
+            "idle_0",
+            "idle_1"
+        ],
+        "walk": [
+            "walk_0",
+            "walk_1"
+        ]
     }
 }
