@@ -90,13 +90,13 @@ const handleStartGame = async () => {
         </main>
 
         <main v-else class="flex flex-col gap-5 py-6 text-text w-full h-full">
-            <audio id="startGameAudio" src="src/assets/start-game.wav"></audio>
-            <audio id="gameAudio" src="src/assets/fight.wav" preload="auto" loop></audio>
+            <audio id="startGameAudio" src="src/assets/audio/start-game.wav"></audio>
+            <audio id="gameAudio" src="src/assets/audio/fight.wav" preload="auto" loop></audio>
 
-            <audio v-for="player in players" :id="`${player.playerID}HitAudio`" src="src/assets/hit-sound.mp3"
+            <audio v-for="player in players" :id="`${player.playerID}HitAudio`" src="src/assets/audio/hit-sound.mp3"
                 preload="auto"></audio>
 
-            <audio id="gameOverAudio" src="src/assets/round_end.wav" preload="auto"></audio>
+            <audio id="gameOverAudio" src="src/assets/audio/round_end.wav" preload="auto"></audio>
             <VersusDisplay :player1="player1" :player2="player2" :authUser="authUser" />
 
             <div class="fight__area rounded-md shadow-lg shadow-primary-600/30" id="fightArea" ref="fightArea"></div>

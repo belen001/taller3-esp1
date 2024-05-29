@@ -8,7 +8,6 @@ import FightersCarroussel from '@/components/organisms/FightersCarroussel.vue';
 <template>
     <main class="flex flex-col gap-4 p-6 overflow-y-auto">
         <article class="prose lg:prose-base dark:prose-invert dark:text-text flex flex-col w-full">
-
             <Onboarding />
             <FightersCarroussel />
             <Footer />

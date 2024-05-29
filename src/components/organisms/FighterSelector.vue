@@ -68,30 +68,33 @@ const handleUnselectPlayer2 = (player) => {
 </script>
 
 <template>
-    <audio id="selectedPlayerAudio" src="src/assets/selected-player.wav"></audio>
-    <audio id="unselectedPlayerAudio" src="src/assets/unselected-player.wav"></audio>
-    <section class="flex flex-col gap-6 max-h-full">
-        <h3 class="text-lg font-semibold text-center"> Personajes</h3>
-        <div class="flex flex-col w-full items-center gap-10 overflow-y-auto px-4 py-2">
-            <FighterCard @click="handlePlayerSelect(fighter)" v-for="fighter in fightersRef" :fighter="fighter" />
-        </div>
-    </section>
-    <div class="flex flex-col gap-8 w-full h-full items-center justify-center">
-        <h3 class="font-semibold"> {{ handleTitle() }} </h3>
-        <div class="flex w-full justify-between items-center">
-            <FighterCard @click="handleUnselectPlayer1(player1)" class="h-80 w-60" :fighter="player1"
-                :onlyPresentation="true" />
-            vs
-            <FighterCard @click="handleUnselectPlayer2(player2)" class="h-80 w-60" :fighter="player2"
-                :onlyPresentation="true" />
-        </div>
-        <button v-if="player1 && player2" class="
+    <audio id="selectedPlayerAudio" src="src/assets/audio/selected-player.wav"></audio>
+    <audio id="unselectedPlayerAudio" src="src/assets/audio/unselected-player.wav"></audio>
+    <section class="flex flex-col gap-2 w-full h-full px-4">
+        <div class="flex flex-col gap-8 w-full h-full items-center justify-center">
+            <h3 class="font-semibold"> {{ handleTitle() }} </h3>
+            <div class="flex w-full justify-between items-center">
+                <FighterCard @click="handleUnselectPlayer1(player1)" class="h-80 w-60" :fighter="player1"
+                    :onlyPresentation="true" />
+                vs
+                <FighterCard @click="handleUnselectPlayer2(player2)" class="h-80 w-60" :fighter="player2"
+                    :onlyPresentation="true" />
+            </div>
+            <button v-if="player1 && player2" class="
             w-40
             bg-primary-900 text-text font-semibold p-4 rounded-md shadow-lg 
                 shadow-primary-900/80 
                 hover:bg-primary-950
                 hover:shadow-primary-900/90 transition-all duration-200 cursor-pointer" @click="onStartGame">
-            Comenzar
-        </button>
-    </div>
+                Comenzar
+            </button>
+        </div>
+        <section class="flex flex-col gap-6">
+            <h3 class="text-lg font-semibold"> Personajes</h3>
+            <div class="flex w-full items-center gap-10">
+                <FighterCard class="h-60 w-40" @click="handlePlayerSelect(fighter)" v-for="fighter in fightersRef"
+                    :fighter="fighter" />
+            </div>
+        </section>
+    </section>
 </template>

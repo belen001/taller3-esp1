@@ -59,7 +59,7 @@ export const fighters = [
     //     image: "src/assets/gifs/mai.gif"
     // }),
     new Fighter({
-        name: "Kazuya Mishima",
+        name: "Kazuya",
         playerID: "player8",
         health: 105,
         damage: 12,

@@ -2,8 +2,6 @@
 // FightersCarroussel.vue
 import { ref } from 'vue';
 import { fighters } from '@/core/fighters';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import FighterCard from '../molecules/FighterCard.vue';
 
 const carouselRef = ref(null);
@@ -34,8 +32,14 @@ const scrollRight = () => {
                 </svg>
             </button>
             <section ref="carouselRef" class="flex w-full overflow-x-auto gap-10 overflow-hidden px-4 py-10">
-                <FighterCard class="flex-shrink-0 w-[400px] h-[400px] cursor-default select-none hover:scale-[102%]"
-                    v-for="fighter in fighters" :onlyPresentation="true" :fighter="fighter" :key="fighter.id" />
+                <picture v-for="fighter in fighters"
+                    class="flex-shrink-0 relative h-80 shadow-lg shadow-primary-900/80 rounded-md">
+                    <img :src="fighter.image" class="h-full w-[300px] rounded-md object-cover">
+                    <span
+                        class="absolute bottom-0 left-0 right-0 h-14 p-0 bg-gradient-to-t from-primary-950/60 to-transparent rounded-b-md">
+                        <p class="px-4 font-semibold"> {{ fighter.name }}</p>
+                    </span>
+                </picture>
             </section>
             <button @click="scrollRight" class="absolute right-1 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-primary-950 transition-all 
                 duration-200 text-white rounded-full shadow-md hover:bg-primary-800">
